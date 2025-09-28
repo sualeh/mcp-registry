@@ -70,6 +70,22 @@ jobs:
         run: ./mcp-publisher publish
 ```
 
+Optionally, at the end of your workflow, you can show the latest registration for your server as the GitHub Actions workflow job summary. Replace "<<your server name>>" with the name of the server in the YAML snippet below.
+
+```yaml
+      - name: Show MCP registration
+        shell: bash
+        if: always()
+        run: |
+          # Show last registered version
+          curl -s -X GET "https://registry.modelcontextprotocol.io/v0/servers?search=<<your server name>>" \
+            -H "accept: application/json" | \
+            jq '.servers[0] | {name, version, _meta}' > output.json
+          echo '```json' >> $GITHUB_STEP_SUMMARY
+          cat output.json >> $GITHUB_STEP_SUMMARY
+          echo '```' >> $GITHUB_STEP_SUMMARY
+```
+
 ### Step 2: Configure Secrets
 
 You don't need any secrets for publishing to the MCP Registry using GitHub OIDC.
