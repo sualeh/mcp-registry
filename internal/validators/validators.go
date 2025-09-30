@@ -343,7 +343,7 @@ func validateRemoteTransport(obj *model.Transport) error {
 }
 
 // ValidatePublishRequest validates a complete publish request including extensions
-func ValidatePublishRequest(req apiv0.ServerJSON, cfg *config.Config) error {
+func ValidatePublishRequest(ctx context.Context, req apiv0.ServerJSON, cfg *config.Config) error {
 	// Validate publisher extensions in _meta
 	if err := validatePublisherExtensions(req); err != nil {
 		return err
@@ -354,9 +354,8 @@ func ValidatePublishRequest(req apiv0.ServerJSON, cfg *config.Config) error {
 		return err
 	}
 
-	// Validate registry ownership for all packages if validation is enabled and server is not deleted
-	if cfg.EnableRegistryValidation && req.Status != model.StatusDeleted {
-		ctx := context.Background()
+	// Validate registry ownership for all packages if validation is enabled
+	if cfg.EnableRegistryValidation {
 		for i, pkg := range req.Packages {
 			if err := ValidatePackage(ctx, pkg, req.Name); err != nil {
 				return fmt.Errorf("registry validation failed for package %d (%s): %w", i, pkg.Identifier, err)
@@ -381,12 +380,8 @@ func validatePublisherExtensions(req apiv0.ServerJSON) error {
 		}
 	}
 
-	if req.Meta != nil {
-		// Validate that only publisher-provided data is allowed in _meta during publish (no official registry metadata should be present)
-		if req.Meta.Official != nil {
-			return fmt.Errorf("official registry metadata '_meta.io.modelcontextprotocol.registry/official' is not allowed during publish")
-		}
-	}
+	// Note: ServerJSON._meta only contains PublisherProvided data
+	// Official registry metadata is handled separately in the response structure
 
 	return nil
 }

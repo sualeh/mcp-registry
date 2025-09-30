@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
+  "$id": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
   "title": "MCP Server Detail",
   "$ref": "#/definitions/ServerDetail",
   "definitions": {
@@ -57,12 +57,6 @@
           "example": "MCP server providing weather data and forecasts via OpenWeatherMap API",
           "minLength": 1,
           "maxLength": 100
-        },
-        "status": {
-          "type": "string",
-          "enum": ["active", "deprecated", "deleted"],
-          "default": "active",
-          "description": "Server lifecycle status. 'deprecated' indicates the server is no longer recommended for new usage. 'deleted' indicates the server should never be installed and existing installations should be uninstalled - this is rare, and usually indicates malware or a legal takedown."
         },
         "repository": {
           "$ref": "#/definitions/Repository",
@@ -432,7 +426,7 @@
               "type": "string",
               "format": "uri",
               "description": "JSON Schema URI for this server.json format",
-              "example": "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json"
+              "example": "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json"
             },
             "packages": {
               "type": "array",
@@ -461,11 +455,6 @@
                 "io.modelcontextprotocol.registry/publisher-provided": {
                   "type": "object",
                   "description": "Publisher-provided metadata for downstream registries",
-                  "additionalProperties": true
-                },
-                "io.modelcontextprotocol.registry/official": {
-                  "type": "object",
-                  "description": "Official MCP registry metadata (read-only, added by registry)",
                   "additionalProperties": true
                 }
               }

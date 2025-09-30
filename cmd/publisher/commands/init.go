@@ -301,10 +301,9 @@ func createServerJSON(
 
 	// Create server structure
 	return apiv0.ServerJSON{
-		Schema:      "https://static.modelcontextprotocol.io/schemas/2025-09-16/server.schema.json",
+		Schema:      "https://static.modelcontextprotocol.io/schemas/2025-09-29/server.schema.json",
 		Name:        name,
 		Description: description,
-		Status:      model.StatusActive,
 		Repository: model.Repository{
 			URL:    repoURL,
 			Source: repoSource,
